@@ -1,0 +1,52 @@
+IF NOT EXISTS(SELECT 1 FROM sys.Tables
+WHERE Name = N'pontosturisticos')
+BEGIN
+CREATE TABLE [dbo].[pontosturisticos] (
+    [Id]           INT           IDENTITY (1, 1) NOT NULL,
+    [Nome]         VARCHAR (255) NULL,
+    [Descricao]    VARCHAR (100) NULL,
+    [Localizacao]  VARCHAR (255) NULL,
+    [DataCadastro] DATETIME      NULL,
+    CONSTRAINT [PK_pontosturisticos] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+END
+
+
+CREATE PROCEDURE [dbo].[AdicionarPonto]
+	@Nome				VARCHAR(255), 
+	@Descricao			VARCHAR(100), 
+	@Localizacao		VARCHAR(255),
+	@DataCadastro		DATETIME
+AS
+BEGIN
+	INSERT INTO dbo.pontosturisticos (Nome, Descricao, Localizacao, DataCadastro)
+		VALUES (@Nome, @Descricao, @Localizacao, @DataCadastro);
+END
+
+
+CREATE PROCEDURE [dbo].[AlterarPonto]
+	@Id					INT,
+	@Nome				VARCHAR(255), 
+	@Descricao			VARCHAR(100), 
+	@Localizacao		VARCHAR(255)
+AS
+BEGIN
+	UPDATE dbo.pontosturisticos 
+	SET Nome = @Nome, Descricao = @Descricao, Localizacao = @Localizacao
+	WHERE Id = @Id;
+END
+
+
+CREATE PROCEDURE [dbo].[BuscarPonto]
+	@Id INT
+AS
+BEGIN
+	SELECT * FROM pontosturisticos p WHERE p.Id = @Id;
+END
+
+
+CREATE PROCEDURE ListarPontos
+AS
+BEGIN
+	SELECT * FROM pontosturisticos;
+END
